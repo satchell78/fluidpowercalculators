@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8"><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><script type="text/javascript">
+        function sum() {
+            var ef = document.getElementById('ef').value;
+            var rf = document.getElementById('rf').value;
+            var psi = document.getElementById('psi').value;
+
+            var stroke = document.getElementById('stroke').value;
+
+
+
+            var time = document.getElementById('time').value;
+            var gpm = document.getElementById('gpm').value;
+
+            var beaValue = parseFloat(ef) / parseInt(psi);
+            var boreValue = Math.sqrt(parseFloat(beaValue) / 0.7854);
+
+            if (!isNaN(boreValue)) {
+                document.getElementById('beaResult').value = beaValue;
+                document.getElementById('boreRootResult').value = boreValue;
+            }
+        }
+
+
+        function rodFunction() {
+            var rods = document.getElementById("rodSize").value;
+
+            var rod = document.getElementById("rodType").value;
+            var bv = document.getElementById('boreRootResult').value;
+
+            switch (rod) {
+                //the select values are 1, 2, 3 not one, two etc
+                case "1":
+                    $('#rodSize')
+                        .find('option')
+                        .remove()
+                        .end();
+
+                    if (bv < 1.5) {
+                        document.getElementById('boreChartResult').value = 1.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="1">One</option>');
+                        $("#rodSize").append('<option value="2">Two</option>');
+                    }
+                    if (bv > 1.5 && bv < 2) {
+                        document.getElementById('boreChartResult').value = 2;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="3">One</option>');
+                        $("#rodSize").append('<option value="4">Two</option>');
+                    }
+                    if (bv > 2 && bv < 2.5) {
+                        document.getElementById('boreChartResult').value = 2.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="5">One</option>');
+                        $("#rodSize").append('<option value="6">Two</option>');
+                        $("#rodSize").append('<option value="7">Three</option>');
+                    }
+                    if (bv > 2.5 && bv < 3.25) {
+                        document.getElementById('boreChartResult').value = 3.25;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="8">One</option>');
+                        $("#rodSize").append('<option value="9">Two</option>');
+                        $("#rodSize").append('<option value="10">Three</option>');
+                    }
+                    if (bv > 3.25 && bv < 4) {
+                        document.getElementById('boreChartResult').value = 4;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="11">One</option>');
+                        $("#rodSize").append('<option value="12">Two</option>');
+                        $("#rodSize").append('<option value="13">Three</option>');
+                    }
+                    if (bv > 4 && bv < 5) {
+                        document.getElementById('boreChartResult').value = 5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="14">One</option>');
+                        $("#rodSize").append('<option value="15">Two</option>');
+                        $("#rodSize").append('<option value="16">Three</option>');
+                        $("#rodSize").append('<option value="17">Four</option>');
+                    }
+                    if (bv > 5 && bv < 6) {
+                        document.getElementById('boreChartResult').value = 6;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="18">One</option>');
+                        $("#rodSize").append('<option value="19">Two</option>');
+                        $("#rodSize").append('<option value="20">Three</option>');
+                    }
+                    if (bv > 6 && bv < 7) {
+                        document.getElementById('boreChartResult').value = 7;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="21">One</option>');
+                        $("#rodSize").append('<option value="22">Two</option>');
+                        $("#rodSize").append('<option value="23">Three</option>');
+                    }
+                    if (bv > 7 && bv < 8) {
+                        document.getElementById('boreChartResult').value = 8;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="24">One</option>');
+                        $("#rodSize").append('<option value="25">Two</option>');
+                        $("#rodSize").append('<option value="26">Three</option>');
+                    }
+                    if (bv > 8 && bv < 10) {
+                        document.getElementById('boreChartResult').value = 10;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="27">One</option>');
+                        $("#rodSize").append('<option value="28">Two</option>');
+                        $("#rodSize").append('<option value="29">Three</option>');
+                    }
+                    if (bv > 10 && bv < 12) {
+                        document.getElementById('boreChartResult').value = 12;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="30">One</option>');
+                        $("#rodSize").append('<option value="31">Two</option>');
+                        $("#rodSize").append('<option value="32">Three</option>');
+                    }
+                    if (bv > 12 && bv < 14) {
+                        document.getElementById('boreChartResult').value = 14;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="33">One</option>');
+                        $("#rodSize").append('<option value="34">Two</option>');
+                        $("#rodSize").append('<option value="35">Three</option>');
+                    }
+                    break;
+
+                case "2":
+                    $('#rodSize')
+                        .find('option')
+                        .remove()
+                        .end();
+
+                    if (bv < 2) {
+                        document.getElementById('boreChartResult').value = 2;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="36">One</option>');
+                        $("#rodSize").append('<option value="37">Two</option>');
+                        $("#rodSize").append('<option value="38">Three</option>');
+                    }
+                    if (bv > 2 && bv < 2.5) {
+                        document.getElementById('boreChartResult').value = 2.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="39">One</option>');
+                        $("#rodSize").append('<option value="40">Two</option>');
+                        $("#rodSize").append('<option value="41">Three</option>');
+                        $("#rodSize").append('<option value="42">Four</option>');
+                        $("#rodSize").append('<option value="43">Five</option>');
+                        $("#rodSize").append('<option value="44">Six</option>');
+                    }
+                    if (bv > 2.5 && bv < 3) {
+                        document.getElementById('boreChartResult').value = 3;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="45">One</option>');
+                        $("#rodSize").append('<option value="46">Two</option>');
+                        $("#rodSize").append('<option value="47">Three</option>');
+                        $("#rodSize").append('<option value="48">Four</option>');
+                        $("#rodSize").append('<option value="49">Five</option>');
+                        $("#rodSize").append('<option value="50">Six</option>');
+                        $("#rodSize").append('<option value="51">Seven</option>');
+                    }
+                    if (bv > 3 && bv < 3.25) {
+                        document.getElementById('boreChartResult').value = 3.25;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="52">One</option>');
+                        $("#rodSize").append('<option value="53">Two</option>');
+                        $("#rodSize").append('<option value="54">Three</option>');
+                        $("#rodSize").append('<option value="55">Four</option>');
+                        $("#rodSize").append('<option value="56">Five</option>');
+                    }
+                    if (bv > 3.25 && bv < 3.5) {
+                        document.getElementById('boreChartResult').value = 3.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="57">One</option>');
+                        $("#rodSize").append('<option value="58">Two</option>');
+                        $("#rodSize").append('<option value="59">Three</option>');
+                        $("#rodSize").append('<option value="60">Four</option>');
+                        $("#rodSize").append('<option value="61">Five</option>');
+                        $("#rodSize").append('<option value="62">Six</option>');
+                    }
+                    if (bv > 3.5 && bv < 4) {
+                        document.getElementById('boreChartResult').value = 4;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="63">One</option>');
+                        $("#rodSize").append('<option value="64">Two</option>');
+                        $("#rodSize").append('<option value="65">Three</option>');
+                        $("#rodSize").append('<option value="66">Four</option>');
+                        $("#rodSize").append('<option value="67">Five</option>');
+                        $("#rodSize").append('<option value="68">Six</option>');
+                    }
+                    if (bv > 4 && bv < 4.5) {
+                        document.getElementById('boreChartResult').value = 4.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="69">One</option>');
+                        $("#rodSize").append('<option value="70">Two</option>');
+                        $("#rodSize").append('<option value="71">Three</option>');
+                        $("#rodSize").append('<option value="72">Four</option>');
+                        $("#rodSize").append('<option value="73">Five</option>');
+                    }
+                    if (bv > 4.5 && bv < 5) {
+                        document.getElementById('boreChartResult').value = 5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="74">One</option>');
+                        $("#rodSize").append('<option value="75">Two</option>');
+                        $("#rodSize").append('<option value="76">Three</option>');
+                        $("#rodSize").append('<option value="77">Four</option>');
+                        $("#rodSize").append('<option value="78">Five</option>');
+                    }
+                    if (bv > 5 && bv < 5.5) {
+                        document.getElementById('boreChartResult').value = 5.5;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="79">One</option>');
+                        $("#rodSize").append('<option value="80">Two</option>');
+                        $("#rodSize").append('<option value="81">Three</option>');
+                        $("#rodSize").append('<option value="82">Four</option>');
+                        $("#rodSize").append('<option value="83">Five</option>');
+                    }
+                    if (bv > 5.5 && bv < 6) {
+                        document.getElementById('boreChartResult').value = 6;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="84">One</option>');
+                        $("#rodSize").append('<option value="85">Two</option>');
+                        $("#rodSize").append('<option value="86">Three</option>');
+                        $("#rodSize").append('<option value="87">Four</option>');
+                        $("#rodSize").append('<option value="88">Five</option>');
+                    }
+                    if (bv > 6 && bv < 7) {
+                        document.getElementById('boreChartResult').value = 7;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="89">One</option>');
+                        $("#rodSize").append('<option value="90">Two</option>');
+                        $("#rodSize").append('<option value="91">Three</option>');
+                        $("#rodSize").append('<option value="92">Four</option>');
+                        $("#rodSize").append('<option value="93">Five</option>');
+                    }
+                    if (bv > 7 && bv < 8) {
+                        document.getElementById('boreChartResult').value = 8;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="94">One</option>');
+                        $("#rodSize").append('<option value="95">Two</option>');
+                        $("#rodSize").append('<option value="96">Three</option>');
+                    }
+                    if (bv > 8 && bv < 10) {
+                        document.getElementById('boreChartResult').value = 10;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="97">One</option>');
+                        $("#rodSize").append('<option value="98">Two</option>');
+                        $("#rodSize").append('<option value="99">Three</option>');
+                        $("#rodSize").append('<option value="100">Four</option>');
+                    }
+                    if (bv > 10 && bv < 12) {
+                        document.getElementById('boreChartResult').value = 12;
+                        $("#rodSize").append('<option value="0"></option>');
+                        $("#rodSize").append('<option value="101">One</option>');
+                        $("#rodSize").append('<option value="102">Two</option>');
+                        $("#rodSize").append('<option value="103">Three</option>');
+                        $("#rodSize").append('<option value="104">Four</option>');
+                    }
+                    break;
+
+                case "3":
+                    $('#rodSize')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="0"></option>')
+                        .append('<option value="105">One</option>')
+                        .val('0');
+
+                    if (bv < 2) {
+                        document.getElementById('boreChartResult').value = 2;
+                        document.getElementById('rodChartResult').value = 1.0625;
+                    }
+                    if (bv > 2 && bv < 2.5) {
+                        document.getElementById('boreChartResult').value = 2.5;
+                        document.getElementById('rodChartResult').value = 1.25;
+                    }
+                    if (bv > 2.5 && bv < 3) {
+                        document.getElementById('boreChartResult').value = 3;
+                        document.getElementById('rodChartResult').value = 1.5;
+                    }
+                    if (bv > 3 && bv < 3.5) {
+                        document.getElementById('boreChartResult').value = 3.5;
+                        document.getElementById('rodChartResult').value = 2;
+                    }
+                    if (bv > 3.5 && bv < 4) {
+                        document.getElementById('boreChartResult').value = 4;
+                        document.getElementById('rodChartResult').value = 2;
+                    }
+                    if (bv > 4 && bv < 5) {
+                        document.getElementById('boreChartResult').value = 5;
+                        document.getElementById('rodChartResult').value = 2;
+                    }
+                    break;
+            }
+        }
+
+
+        function overSizeFunction() {
+            var rods = document.getElementById("rodSize").value;
+            var rod = document.getElementById("rodType").value;
+            var bv = document.getElementById('boreRootResult').value;
+
+            if (rods == 1 && bv < 1.5) {
+                document.getElementById('rodChartResult').value = 0.625;
+            }
+            if (rods == 2 && bv < 1.5) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+
+            if (rods == 3 && bv < 2) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+            if (rods == 4 && bv < 2) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+
+            if (rods == 5 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+            if (rods == 6 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 7 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+
+            if (rods == 8 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 9 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 10 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+
+            if (rods == 11 && bv < 4) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 12 && bv < 4) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 13 && bv < 4) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+
+            if (rods == 14 && bv < 5) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 15 && bv < 5) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 16 && bv < 5) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 17 && bv < 5) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+
+            if (rods == 18 && bv < 6) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 19 && bv < 6) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 20 && bv < 6) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+
+            if (rods == 21 && bv < 7) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 22 && bv < 7) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 23 && bv < 7) {
+                document.getElementById('rodChartResult').value = 5;
+            }
+
+            if (rods == 24 && bv < 8) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 25 && bv < 8) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 26 && bv < 8) {
+                document.getElementById('rodChartResult').value = 5.5;
+            }
+
+            if (rods == 27 && bv < 10) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+            if (rods == 28 && bv < 10) {
+                document.getElementById('rodChartResult').value = 5.5;
+            }
+            if (rods == 29 && bv < 10) {
+                document.getElementById('rodChartResult').value = 7;
+            }
+
+            if (rods == 30 && bv < 12) {
+                document.getElementById('rodChartResult').value = 5.5;
+            }
+            if (rods == 31 && bv < 12) {
+                document.getElementById('rodChartResult').value = 7;
+            }
+            if (rods == 32 && bv < 12) {
+                document.getElementById('rodChartResult').value = 8;
+            }
+
+            if (rods == 33 && bv < 14) {
+                document.getElementById('rodChartResult').value = 7;
+            }
+            if (rods == 34 && bv < 14) {
+                document.getElementById('rodChartResult').value = 8;
+            }
+            if (rods == 35 && bv < 14) {
+                document.getElementById('rodChartResult').value = 10;
+            }
+
+
+
+            if (rods == 36 && bv < 2) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+            if (rods == 37 && bv < 2) {
+                document.getElementById('rodChartResult').value = 1.125;
+            }
+            if (rods == 38 && bv < 2) {
+                document.getElementById('rodChartResult').value = 1.25;
+            }
+
+            if (rods == 39 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+            if (rods == 40 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.125;
+            }
+            if (rods == 41 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.25;
+            }
+            if (rods == 42 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 43 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.5;
+            }
+            if (rods == 44 && bv < 2.5) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+
+            if (rods == 45 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1;
+            }
+            if (rods == 46 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1.125;
+            }
+            if (rods == 47 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1.25;
+            }
+            if (rods == 48 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 49 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1.5;
+            }
+            if (rods == 50 && bv < 3) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 51 && bv < 3) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+
+            if (rods == 52 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.25;
+            }
+            if (rods == 53 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 54 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.5;
+            }
+            if (rods == 55 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 56 && bv < 3.25) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+
+            if (rods == 57 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 1.25;
+            }
+            if (rods == 58 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 59 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 1.5;
+            }
+            if (rods == 60 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 61 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 62 && bv < 3.5) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+
+            if (rods == 63 && bv < 4) {
+                document.getElementById('rodChartResult').value = 1.375;
+            }
+            if (rods == 64 && bv < 4) {
+                document.getElementById('rodChartResult').value = 1.5;
+            }
+            if (rods == 65 && bv < 4) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 66 && bv < 4) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 67 && bv < 4) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 68 && bv < 4) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+
+            if (rods == 69 && bv < 4.5) {
+                document.getElementById('rodChartResult').value = 1.75;
+            }
+            if (rods == 70 && bv < 4.5) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 71 && bv < 4.5) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 72 && bv < 4.5) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 73 && bv < 4.5) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+
+            if (rods == 74 && bv < 5) {
+                document.getElementById('rodChartResult').value = 2;
+            }
+            if (rods == 75 && bv < 5) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 76 && bv < 5) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 77 && bv < 5) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 78 && bv < 5) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+
+            if (rods == 79 && bv < 5.5) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 80 && bv < 5.5) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 81 && bv < 5.5) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 82 && bv < 5.5) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 83 && bv < 5.5) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+
+            if (rods == 84 && bv < 6) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 85 && bv < 6) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 86 && bv < 6) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 87 && bv < 6) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 88 && bv < 6) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+
+            if (rods == 89 && bv < 7) {
+                document.getElementById('rodChartResult').value = 2.5;
+            }
+            if (rods == 90 && bv < 7) {
+                document.getElementById('rodChartResult').value = 3;
+            }
+            if (rods == 91 && bv < 7) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 92 && bv < 7) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 93 && bv < 7) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+
+            if (rods == 94 && bv < 8) {
+                document.getElementById('rodChartResult').value = 3.5;
+            }
+            if (rods == 95 && bv < 8) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 96 && bv < 8) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+
+            if (rods == 97 && bv < 10) {
+                document.getElementById('rodChartResult').value = 4;
+            }
+            if (rods == 98 && bv < 10) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+            if (rods == 99 && bv < 10) {
+                document.getElementById('rodChartResult').value = 5;
+            }
+            if (rods == 100 && bv < 10) {
+                document.getElementById('rodChartResult').value = 6;
+            }
+
+            if (rods == 101 && bv < 12) {
+                document.getElementById('rodChartResult').value = 4.5;
+            }
+            if (rods == 102 && bv < 12) {
+                document.getElementById('rodChartResult').value = 5;
+            }
+            if (rods == 103 && bv < 12) {
+                document.getElementById('rodChartResult').value = 6;
+            }
+            if (rods == 104 && bv < 12) {
+                document.getElementById('rodChartResult').value = 8;
+            }
+        }
+
+        function sumAgain() {
+            var ef = document.getElementById('ef').value;
+            var rf = document.getElementById('rf').value;
+            var bca = document.getElementById('boreChartResult').value;
+            var rca = document.getElementById('rodChartResult').value;
+            
+            var strokeValue = document.getElementById('stroke').value;
+
+            var beaActual = Math.pow(bca, 2)*0.7854;
+            var reaActual = beaActual - Math.pow(rca, 2)*0.7854;
+
+            var ratio = beaActual / strokeValue;
+
+            var evr = beaActual * strokeValue;
+            var rvr = reaActual * strokeValue;
+
+            var elpsi = ef / beaActual;
+            var rlpsi = rf / reaActual;
+
+            var comp = elpsi * 1.15;
+            var compRound = Math.round(comp / 50) * 50;
+            if (compRound < comp){
+                compRound = compRound + 50;
+            }
+
+            var rv = elpsi * 1.3225;
+            var rvRound = Math.round(rv / 50) * 50;
+            if (rvRound < rv){
+                rvRound = rvRound + 50;
+            }
+
+            if (!isNaN(reaActual)) {
+                document.getElementById('beaSquaredResult').value = beaActual;
+                document.getElementById('reaSquaredResult').value = reaActual;
+                
+                document.getElementById('ratioResult').value = ratio;
+
+                document.getElementById('extendVolumeResult').value = evr;
+                document.getElementById('retractVolumeResult').value = rvr;
+
+                document.getElementById('elpsiResult').value = elpsi;
+                document.getElementById('rlpsiResult').value = rlpsi;
+
+                document.getElementById('compResult').value = comp;
+                document.getElementById('compRoundedResult').value = compRound;
+
+                document.getElementById('rvResult').value = rv;
+                document.getElementById('rvRoundedResult').value = rvRound;
+            }
+        }
+
+        $(document).ready(function () {
+            $("input:radio[name=timegpm]").click(function () {
+                var guidesValue = $("input:radio[name=timegpm]:checked").val();
+
+                var text;
+                var input_id = "";
+
+                switch (guidesValue) {
+                    case 'Time':
+                        input_id += "timeV";
+                        text = "Time";
+                        break;
+                    case 'GPM':
+                        input_id += "gpmV";
+                        text = "GPM";
+                        break;
+                    default:
+                        input_id += "timeV";
+                        text = "Time";
+                        break;
+                }
+
+                $('.timegpmInput').attr('id', input_id);
+                console.log(input_id);
+                document.getElementById("timegpm").innerHTML = text;
+            });
+        });
+        
+        function sumFinal() {
+            var evR = document.getElementById('extendVolumeResult').value;
+            var rvR = document.getElementById('retractVolumeResult').value;
+
+            var bvR = document.getElementById('beaSquaredResult').value;
+            var rsvR = document.getElementById('reaSquaredResult').value;
+            
+
+
+            if(document.getElementById('time').checked) {
+                var timeValue = document.getElementById('timeV').value;
+                var extTimeValue = timeValue;
+                var pumpGPMValue = evR / (timeValue * 3.85);
+                var retTimeValue = rvR / (pumpGPMValue * 3.85)
+                var retIPMValue = (pumpGPMValue * 231) / rsvR;
+                var eIPMValue = (pumpGPMValue * 231) / bvR;
+            }else if(document.getElementById('gpm').checked) {
+                var gpmValue = document.getElementById('gpmV').value;
+                var extTimeValue = evR / (gpmValue * 3.85);
+                var pumpGPMValue = gpmValue;
+                var retTimeValue = rvR / (pumpGPMValue * 3.85)
+                var retIPMValue = (pumpGPMValue * 231) / rsvR;
+                var eIPMValue = (pumpGPMValue * 231) / bvR;
+            }
+        
+            
+            if (!isNaN(extTimeValue)) {
+                document.getElementById('extTimeResult').value = extTimeValue;
+                document.getElementById('extIPMResult').value = eIPMValue;
+                
+                document.getElementById('retTimeResult').value = retTimeValue;
+                document.getElementById('retIPMResult').value = retIPMValue;
+
+                document.getElementById('pumpGPMResult').value = pumpGPMValue;
+            }
+        }
+
+            function sumCID() {
+            var rpmValue = document.getElementById('rpm').value;
+            var gpmResult = document.getElementById('pumpGPMResult').value
+
+            var pumpCIDValue = (gpmResult * 231) / rpmValue;
+            
+            if (!isNaN(pumpCIDValue)) {
+                document.getElementById('pumpCIDResult').value = pumpCIDValue;
+            }
+        }
+
+        
+    </script>
+</head>
+<body>
+<h2>Fluid Power Rod Cylinder Sizing Calculator</h2>
+
+<!--<div style="border:1px solid gray;width: 450px; height:520px">-->
+<p><label>Extend Force</label> <input id="ef" onkeyup="sum()" type="text" /></p>
+
+<p><label>Retract Force</label> <input id="rf" onkeyup="sum()" type="text" /></p>
+
+<p><label>PSI</label> <input id="psi" onkeyup="sum()" type="text" /></p>
+
+<p><label>Tie Rod Type</label>
+<select id="rodType" onchange="rodFunction()"><option value="0"></option><option value="1">Industrial 4-Tie Rod</option><option value="2">Mobile</option><option value="3">Aga 4-Tie Rod</option> </select></p>
+
+<p><label>Rod Over Size</label> 
+<select id="rodSize" onchange="overSizeFunction()"><option value="0"></option><option value="1">One</option><option value="2">Two</option><option value="3">Three</option><option value="4">Four</option> </select></p>
+
+<p><label>Stroke</label> <input id="stroke" onkeyup="sumAgain()" type="text" /></p>
+
+<p><label>Time or Gallons Per Minute</label></p>
+
+<table border="1" cellpadding="3" cellspacing="5" width="30%">
+	<tbody>
+		<tr>
+			<td width="100%"><input checked="checked" id="time" name="timegpm" type="radio" value="Time" /> Time
+			<p><input id="gpm" name="timegpm" type="radio" value="GPM" /> GPM</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><label id="timegpm">Time in Seconds</label> <input class="timegpmInput" id="timeV" onkeyup="sumFinal()" type="text" /></p>
+
+<p><label>Pump RPM</label> <input id="rpm" onkeyup="sumCID()" type="text" /></p>
+<!--</div>-->
+
+<table style="width:100%">
+	<tbody>
+		<tr>
+			<th></th>
+			<th>Extend Theoretical</th>
+			<th>Actual</th>
+			<th></th>
+			<th>Retract Actual</th>
+		</tr>
+		<tr>
+			<td>Bore</td>
+			<td><input id="boreRootResult" type="text" /></td>
+			<td><input id="boreChartResult" type="text" /></td>
+			<td>Rod</td>
+			<td><input id="rodChartResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>BEA</td>
+			<td><input id="beaResult" type="text" /></td>
+			<td><input id="beaSquaredResult" type="text" /></td>
+			<td>REA</td>
+			<td><input id="reaSquaredResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Ratio</td>
+			<td></td>
+			<td><input id="ratioResult" type="text" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Extend Volume</td>
+			<td></td>
+			<td><input id="extendVolumeResult" type="text" /></td>
+			<td>Retract Volume</td>
+			<td><input id="retractVolumeResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Extend Line PSI</td>
+			<td></td>
+			<td><input id="elpsiResult" type="text" /></td>
+			<td>Retract Line PSI</td>
+			<td><input id="rlpsiResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Comp.</td>
+			<td><input id="compResult" type="text" /></td>
+			<td><input id="compRoundedResult" type="text" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Relief Valve</td>
+			<td><input id="rvResult" type="text" /></td>
+			<td><input id="rvRoundedResult" type="text" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Extend Time</td>
+			<td></td>
+			<td><input id="extTimeResult" type="text" /></td>
+			<td>Retract Time</td>
+			<td><input id="retTimeResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Extend IPM</td>
+			<td></td>
+			<td><input id="extIPMResult" type="text" /></td>
+			<td>Retract IPM</td>
+			<td><input id="retIPMResult" type="text" /></td>
+		</tr>
+		<tr>
+			<td>Pump GPM</td>
+			<td></td>
+			<td><input id="pumpGPMResult" type="text" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Pump CID</td>
+			<td></td>
+			<td><input id="pumpCIDResult" type="text" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+   </body>
+</html>
