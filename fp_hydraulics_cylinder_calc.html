@@ -7,14 +7,9 @@
             var ef = document.getElementById('ef').value;
             var rf = document.getElementById('rf').value;
             var psi = document.getElementById('psi').value;
-
             var stroke = document.getElementById('stroke').value;
-
-
-
             var time = document.getElementById('time').value;
             var gpm = document.getElementById('gpm').value;
-
             var beaValue = parseFloat(ef) / parseInt(psi);
             var boreValue = Math.sqrt(parseFloat(beaValue) / 0.7854);
 
@@ -24,10 +19,8 @@
             }
         }
 
-
         function rodFunction() {
             var rods = document.getElementById("rodSize").value;
-
             var rod = document.getElementById("rodType").value;
             var bv = document.getElementById('boreRootResult').value;
 
@@ -294,7 +287,6 @@
             }
         }
 
-
         function overSizeFunction() {
             var rods = document.getElementById("rodSize").value;
             var rod = document.getElementById("rodType").value;
@@ -416,8 +408,6 @@
             if (rods == 35 && bv < 14) {
                 document.getElementById('rodChartResult').value = 10;
             }
-
-
 
             if (rods == 36 && bv < 2) {
                 document.getElementById('rodChartResult').value = 1;
@@ -695,7 +685,6 @@
         $(document).ready(function () {
             $("input:radio[name=timegpm]").click(function () {
                 var guidesValue = $("input:radio[name=timegpm]:checked").val();
-
                 var text;
                 var input_id = "";
 
@@ -723,12 +712,9 @@
         function sumFinal() {
             var evR = document.getElementById('extendVolumeResult').value;
             var rvR = document.getElementById('retractVolumeResult').value;
-
             var bvR = document.getElementById('beaSquaredResult').value;
             var rsvR = document.getElementById('reaSquaredResult').value;
             
-
-
             if(document.getElementById('time').checked) {
                 var timeValue = document.getElementById('timeV').value;
                 var extTimeValue = timeValue;
@@ -745,7 +731,6 @@
                 var eIPMValue = (pumpGPMValue * 231) / bvR;
             }
         
-            
             if (!isNaN(extTimeValue)) {
                 document.getElementById('extTimeResult').value = extTimeValue;
                 document.getElementById('extIPMResult').value = eIPMValue;
@@ -760,37 +745,25 @@
             function sumCID() {
             var rpmValue = document.getElementById('rpm').value;
             var gpmResult = document.getElementById('pumpGPMResult').value
-
             var pumpCIDValue = (gpmResult * 231) / rpmValue;
             
             if (!isNaN(pumpCIDValue)) {
                 document.getElementById('pumpCIDResult').value = pumpCIDValue;
             }
         }
-
-        
     </script>
 </head>
 <body>
 <h2>Fluid Power Rod Cylinder Sizing Calculator</h2>
-
-<!--<div style="border:1px solid gray;width: 450px; height:520px">-->
 <p><label>Extend Force</label> <input id="ef" onkeyup="sum()" type="text" /></p>
-
 <p><label>Retract Force</label> <input id="rf" onkeyup="sum()" type="text" /></p>
-
 <p><label>PSI</label> <input id="psi" onkeyup="sum()" type="text" /></p>
-
 <p><label>Tie Rod Type</label>
 <select id="rodType" onchange="rodFunction()"><option value="0"></option><option value="1">Industrial 4-Tie Rod</option><option value="2">Mobile</option><option value="3">Aga 4-Tie Rod</option> </select></p>
-
 <p><label>Rod Over Size</label> 
 <select id="rodSize" onchange="overSizeFunction()"><option value="0"></option><option value="1">One</option><option value="2">Two</option><option value="3">Three</option><option value="4">Four</option> </select></p>
-
 <p><label>Stroke</label> <input id="stroke" onkeyup="sumAgain()" type="text" /></p>
-
 <p><label>Time or Gallons Per Minute</label></p>
-
 <table border="1" cellpadding="3" cellspacing="5" width="30%">
 	<tbody>
 		<tr>
@@ -800,12 +773,8 @@
 		</tr>
 	</tbody>
 </table>
-
 <p><label id="timegpm">Time in Seconds</label> <input class="timegpmInput" id="timeV" onkeyup="sumFinal()" type="text" /></p>
-
 <p><label>Pump RPM</label> <input id="rpm" onkeyup="sumCID()" type="text" /></p>
-<!--</div>-->
-
 <table style="width:100%">
 	<tbody>
 		<tr>
