@@ -1,7 +1,7 @@
 # fluidpowercalculators
 Fluid Power Calculators
 
-You can determine cylinder size of a hydraulic system if you know the 
+You can determine rod cylinder size of a **hydraulic** system if you know the 
 
 -Extend Force 
 
@@ -19,7 +19,7 @@ You can determine cylinder size of a hydraulic system if you know the
 
 -Pump RPM
 
-You can determine cylinder size of a pneumatic system if you know the
+You can determine rod cylinder size of a **pneumatic** system if you know the
 
 -Stroke 
 
