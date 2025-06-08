@@ -1,0 +1,522 @@
+/*
+    Brent C Hull
+    2023-10-01
+    Fluid Power Rod Cylinder Sizing Calculator
+    This calculator is designed to help users size hydraulic cylinders based on input parameters such as force, pressure, stroke, and rod type.
+    It calculates theoretical and actual bore sizes, rod sizes, volumes, pressures, and other related metrics.
+    The calculator is structured to be user-friendly, with clear input fields and dynamically updated results.
+*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid Power Cylinder Sizing Calculator</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        /* Layout Containers */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            grid-column: 1 / -1;
+            color: #005f73;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Form & Input Styling */
+        .input-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: #005f73;
+        }
+
+        input[type="text"], select {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #0077b6;
+            box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.2);
+        }
+
+        /* Radio Button Styling */
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .radio-group label {
+            font-weight: normal;
+            color: #333;
+        }
+
+        /* Results Section Styling */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem 0.5rem;
+            align-items: center;
+        }
+
+        .results-grid .header {
+            font-weight: bold;
+            color: #005f73;
+        }
+
+        .results-grid .label {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .results-grid input[type="text"] {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>Fluid Power Rod Cylinder Sizing Calculator ⚙️</h1>
+
+        <form class="input-form" id="cylinder-form">
+            <fieldset>
+                <legend><h2>Primary Inputs</h2></legend>
+                <div class="input-group">
+                    <label for="extend-force">Extend Force (lbs)</label>
+                    <input type="text" id="extend-force">
+                </div>
+                <div class="input-group">
+                    <label for="retract-force">Retract Force (lbs)</label>
+                    <input type="text" id="retract-force">
+                </div>
+                <div class="input-group">
+                    <label for="psi">System Pressure (PSI)</label>
+                    <input type="text" id="psi">
+                </div>
+                <div class="input-group">
+                    <label for="stroke">Stroke (inches)</label>
+                    <input type="text" id="stroke">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><h2>Cylinder Configuration</h2></legend>
+                 <div class="input-group">
+                    <label for="rod-type">Tie Rod Type</label>
+                    <select id="rod-type">
+                        <option value="0">--- Select Type ---</option>
+                        <option value="1">Industrial 4-Tie Rod</option>
+                        <option value="2">Mobile</option>
+                        <option value="3">Aga 4-Tie Rod</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="rod-size">Rod Oversize</label>
+                    <select id="rod-size">
+                        <option value="0">--- Select Size ---</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><h2>Speed & Flow</h2></legend>
+                <div class="radio-group">
+                    <input type="radio" id="time-radio" name="speed-mode" value="time" checked>
+                    <label for="time-radio">Time</label>
+                    <input type="radio" id="gpm-radio" name="speed-mode" value="gpm">
+                    <label for="gpm-radio">GPM</label>
+                </div>
+                 <div class="input-group">
+                    <label for="speed-input" id="speed-label">Time (seconds)</label>
+                    <input type="text" id="speed-input">
+                </div>
+                 <div class="input-group">
+                    <label for="pump-rpm">Pump RPM</label>
+                    <input type="text" id="pump-rpm">
+                </div>
+            </fieldset>
+        </form>
+
+        <div class="results-section">
+            <h2>Calculated Results</h2>
+            <div class="results-grid">
+                <div class="header"></div>
+                <div class="header">Theoretical</div>
+                <div class="header">Actual</div>
+                <div class="header"></div>
+                <div class="header">Actual</div>
+
+                <div class="label">Bore</div>
+                <input type="text" id="bore-theoretical" readonly>
+                <input type="text" id="bore-actual" readonly>
+                <div class="label">Rod</div>
+                <input type="text" id="rod-actual" readonly>
+
+                <div class="label">BEA</div>
+                <input type="text" id="bea-theoretical" readonly>
+                <input type="text" id="bea-actual" readonly>
+                <div class="label">REA</div>
+                <input type="text" id="rea-actual" readonly>
+                
+                <div class="label">Ratio</div>
+                <div></div>
+                <input type="text" id="ratio-actual" readonly>
+                <div></div>
+                <div></div>
+                
+                <div class="label">Extend Volume</div>
+                <div></div>
+                <input type="text" id="extend-volume" readonly>
+                <div class="label">Retract Volume</div>
+                <input type="text" id="retract-volume" readonly>
+
+                <div class="label">Extend Line PSI</div>
+                <div></div>
+                <input type="text" id="extend-line-psi" readonly>
+                <div class="label">Retract Line PSI</div>
+                <input type="text" id="retract-line-psi" readonly>
+
+                <div class="label">Comp.</div>
+                <input type="text" id="comp-theoretical" readonly>
+                <input type="text" id="comp-actual" readonly>
+                <div></div>
+                <div></div>
+                
+                <div class="label">Relief Valve</div>
+                <input type="text" id="relief-theoretical" readonly>
+                <input type="text" id="relief-actual" readonly>
+                <div></div>
+                <div></div>
+
+                <div class="label">Extend Time</div>
+                <div></div>
+                <input type="text" id="extend-time" readonly>
+                <div class="label">Retract Time</div>
+                <input type="text" id="retract-time" readonly>
+
+                <div class="label">Extend IPM</div>
+                <div></div>
+                <input type="text" id="extend-ipm" readonly>
+                <div class="label">Retract IPM</div>
+                <input type="text" id="retract-ipm" readonly>
+                
+                <div class="label">Pump GPM</div>
+                <div></div>
+                <input type="text" id="pump-gpm" readonly>
+                <div class="label">Pump CID</div>
+                <input type="text" id="pump-cid" readonly>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- CONFIGURATION DATA ---
+    // Replaces the large 'if' and 'switch' blocks with a structured, maintainable object.
+    const cylinderData = {
+        // Industrial 4-Tie Rod
+        "1": [
+            { maxBore: 1.5, chartBore: 1.50, rods: [{ name: "0.625", size: 0.625 }, { name: "1.000", size: 1.000 }] },
+            { maxBore: 2.0, chartBore: 2.00, rods: [{ name: "1.000", size: 1.000 }, { name: "1.375", size: 1.375 }] },
+            { maxBore: 2.5, chartBore: 2.50, rods: [{ name: "1.000", size: 1.000 }, { name: "1.375", size: 1.375 }, { name: "1.750", size: 1.750 }] },
+            { maxBore: 3.25, chartBore: 3.25, rods: [{ name: "1.375", size: 1.375 }, { name: "1.750", size: 1.750 }, { name: "2.000", size: 2.000 }] },
+            { maxBore: 4.0, chartBore: 4.00, rods: [{ name: "1.750", size: 1.750 }, { name: "2.000", size: 2.000 }, { name: "2.500", size: 2.500 }] },
+            { maxBore: 5.0, chartBore: 5.00, rods: [{ name: "2.000", size: 2.000 }, { name: "2.500", size: 2.500 }, { name: "3.000", size: 3.000 }, { name: "3.500", size: 3.500 }] },
+            { maxBore: 6.0, chartBore: 6.00, rods: [{ name: "2.500", size: 2.500 }, { name: "3.000", size: 3.000 }, { name: "4.000", size: 4.000 }] },
+            { maxBore: 7.0, chartBore: 7.00, rods: [{ name: "3.000", size: 3.000 }, { name: "4.000", size: 4.000 }, { name: "5.000", size: 5.000 }] },
+            { maxBore: 8.0, chartBore: 8.00, rods: [{ name: "3.500", size: 3.500 }, { name: "4.000", size: 4.000 }, { name: "5.500", size: 5.500 }] },
+            { maxBore: 10.0, chartBore: 10.00, rods: [{ name: "4.500", size: 4.500 }, { name: "5.500", size: 5.500 }, { name: "7.000", size: 7.000 }] },
+            { maxBore: 12.0, chartBore: 12.00, rods: [{ name: "5.500", size: 5.500 }, { name: "7.000", size: 7.000 }, { name: "8.000", size: 8.000 }] },
+            { maxBore: 14.0, chartBore: 14.00, rods: [{ name: "7.000", size: 7.000 }, { name: "8.000", size: 8.000 }, { name: "10.000", size: 10.000 }] },
+        ],
+        // Mobile
+        "2": [
+            { maxBore: 2.0, chartBore: 2.0, rods: [{ name: "1.000", size: 1.0 }, { name: "1.125", size: 1.125 }, { name: "1.250", size: 1.25 }] },
+            { maxBore: 2.5, chartBore: 2.5, rods: [{ name: "1.000", size: 1.0 }, { name: "1.125", size: 1.125 }, { name: "1.250", size: 1.25 }, { name: "1.375", size: 1.375 }, { name: "1.500", size: 1.5 }, { name: "1.750", size: 1.75 }] },
+            { maxBore: 3.0, chartBore: 3.0, rods: [{ name: "1.000", size: 1.0 }, { name: "1.125", size: 1.125 }, { name: "1.250", size: 1.25 }, { name: "1.375", size: 1.375 }, { name: "1.500", size: 1.5 }, { name: "1.750", size: 1.75 }, { name: "2.000", size: 2.0 }] },
+            { maxBore: 3.25, chartBore: 3.25, rods: [{ name: "1.250", size: 1.25 }, { name: "1.375", size: 1.375 }, { name: "1.500", size: 1.5 }, { name: "1.750", size: 1.75 }, { name: "2.000", size: 2.0 }] },
+            { maxBore: 3.5, chartBore: 3.5, rods: [{ name: "1.250", size: 1.25 }, { name: "1.375", size: 1.375 }, { name: "1.500", size: 1.5 }, { name: "1.750", size: 1.75 }, { name: "2.000", size: 2.0 }, { name: "2.500", size: 2.5 }] },
+            { maxBore: 4.0, chartBore: 4.0, rods: [{ name: "1.375", size: 1.375 }, { name: "1.500", size: 1.5 }, { name: "1.750", size: 1.75 }, { name: "2.000", size: 2.0 }, { name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }] },
+            { maxBore: 4.5, chartBore: 4.5, rods: [{ name: "1.750", size: 1.75 }, { name: "2.000", size: 2.0 }, { name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }, { name: "3.500", size: 3.5 }] },
+            { maxBore: 5.0, chartBore: 5.0, rods: [{ name: "2.000", size: 2.0 }, { name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }, { name: "3.500", size: 3.5 }, { name: "4.000", size: 4.0 }] },
+            { maxBore: 5.5, chartBore: 5.5, rods: [{ name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }, { name: "3.500", size: 3.5 }, { name: "4.000", size: 4.0 }, { name: "4.500", size: 4.5 }] },
+            { maxBore: 6.0, chartBore: 6.0, rods: [{ name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }, { name: "3.500", size: 3.5 }, { name: "4.000", size: 4.0 }, { name: "4.500", size: 4.5 }] },
+            { maxBore: 7.0, chartBore: 7.0, rods: [{ name: "2.500", size: 2.5 }, { name: "3.000", size: 3.0 }, { name: "3.500", size: 3.5 }, { name: "4.000", size: 4.0 }, { name: "4.500", size: 4.5 }] },
+            { maxBore: 8.0, chartBore: 8.0, rods: [{ name: "3.500", size: 3.5 }, { name: "4.000", size: 4.0 }, { name: "4.500", size: 4.5 }] },
+            { maxBore: 10.0, chartBore: 10.0, rods: [{ name: "4.000", size: 4.0 }, { name: "4.500", size: 4.5 }, { name: "5.000", size: 5.0 }, { name: "6.000", size: 6.0 }] },
+            { maxBore: 12.0, chartBore: 12.0, rods: [{ name: "4.500", size: 4.5 }, { name: "5.000", size: 5.0 }, { name: "6.000", size: 6.0 }, { name: "8.000", size: 8.0 }] },
+        ],
+         // Aga 4-Tie Rod
+        "3": [
+            { maxBore: 2.0, chartBore: 2.0, rods: [{ name: "1.0625", size: 1.0625 }] },
+            { maxBore: 2.5, chartBore: 2.5, rods: [{ name: "1.250", size: 1.25 }] },
+            { maxBore: 3.0, chartBore: 3.0, rods: [{ name: "1.500", size: 1.5 }] },
+            { maxBore: 3.5, chartBore: 3.5, rods: [{ name: "2.000", size: 2.0 }] },
+            { maxBore: 4.0, chartBore: 4.0, rods: [{ name: "2.000", size: 2.0 }] },
+            { maxBore: 5.0, chartBore: 5.0, rods: [{ name: "2.000", size: 2.0 }] },
+        ],
+    };
+
+    // --- DOM ELEMENT REFERENCES ---
+    // Cache all DOM elements for performance and cleaner code.
+    const DOMElements = {
+        form: document.getElementById('cylinder-form'),
+        inputs: {
+            extendForce: document.getElementById('extend-force'),
+            retractForce: document.getElementById('retract-force'),
+            psi: document.getElementById('psi'),
+            stroke: document.getElementById('stroke'),
+            rodType: document.getElementById('rod-type'),
+            rodSize: document.getElementById('rod-size'),
+            speedMode: document.querySelectorAll('input[name="speed-mode"]'),
+            speedInput: document.getElementById('speed-input'),
+            speedLabel: document.getElementById('speed-label'),
+            pumpRPM: document.getElementById('pump-rpm'),
+        },
+        outputs: {
+            boreTheoretical: document.getElementById('bore-theoretical'),
+            boreActual: document.getElementById('bore-actual'),
+            rodActual: document.getElementById('rod-actual'),
+            beaTheoretical: document.getElementById('bea-theoretical'),
+            beaActual: document.getElementById('bea-actual'),
+            reaActual: document.getElementById('rea-actual'),
+            ratioActual: document.getElementById('ratio-actual'),
+            extendVolume: document.getElementById('extend-volume'),
+            retractVolume: document.getElementById('retract-volume'),
+            extendLinePsi: document.getElementById('extend-line-psi'),
+            retractLinePsi: document.getElementById('retract-line-psi'),
+            compTheoretical: document.getElementById('comp-theoretical'),
+            compActual: document.getElementById('comp-actual'),
+            reliefTheoretical: document.getElementById('relief-theoretical'),
+            reliefActual: document.getElementById('relief-actual'),
+            extendTime: document.getElementById('extend-time'),
+            retractTime: document.getElementById('retract-time'),
+            extendIpm: document.getElementById('extend-ipm'),
+            retractIpm: document.getElementById('retract-ipm'),
+            pumpGpm: document.getElementById('pump-gpm'),
+            pumpCid: document.getElementById('pump-cid'),
+        }
+    };
+
+    // --- CONSTANTS ---
+    // Define "magic numbers" as named constants for clarity.
+    const PI_OVER_4 = 0.7854;
+    const GPM_TIME_FACTOR = 3.85; // Used in original code
+    const CUBIC_INCHES_PER_GALLON = 231;
+    const COMP_FACTOR = 1.15;
+    const RELIEF_VALVE_FACTOR = 1.3225;
+
+    // --- HELPER FUNCTIONS ---
+    /**
+     * Parses a string value to a float, returning 0 if invalid.
+     * @param {string} value The string to parse.
+     * @returns {number}
+     */
+    const getFloatValue = (element) => parseFloat(element.value) || 0;
+
+    /**
+     * Formats a number to a specified number of decimal places.
+     * @param {number} num The number to format.
+     * @param {number} places The number of decimal places.
+     * @returns {string}
+     */
+    const format = (num, places = 2) => isNaN(num) ? '0.00' : num.toFixed(places);
+    
+    /**
+     * Rounds a number up to the nearest multiple.
+     * @param {number} number The number to round.
+     * @param {number} multiple The multiple to round up to.
+     * @returns {number}
+     */
+    const roundUpToNearest = (number, multiple) => {
+        if (multiple === 0) return number;
+        return Math.ceil(number / multiple) * multiple;
+    };
+
+    // --- DYNAMIC UI UPDATES ---
+    /**
+     * Updates the rod size dropdown based on the selected rod type and calculated bore.
+     */
+    function updateRodSizeDropdown(calculatedBore, rodType) {
+        const rodSizeSelect = DOMElements.inputs.rodSize;
+        const currentRodSize = rodSizeSelect.value; // Save current selection
+        rodSizeSelect.innerHTML = '<option value="0">--- Select Size ---</option>'; // Clear existing options
+
+        const configData = cylinderData[rodType];
+        if (!configData) return;
+        
+        const boreConfig = configData.find(b => calculatedBore <= b.maxBore) || configData[configData.length - 1];
+
+        if (boreConfig && boreConfig.rods) {
+            boreConfig.rods.forEach(rod => {
+                const option = document.createElement('option');
+                option.value = rod.size;
+                option.textContent = rod.name;
+                rodSizeSelect.appendChild(option);
+            });
+            // Restore previous selection if it still exists
+            rodSizeSelect.value = currentRodSize;
+        }
+    }
+    
+    /**
+     * Toggles the label for the speed/flow input field.
+     */
+    function toggleSpeedInputLabel() {
+        const selectedMode = document.querySelector('input[name="speed-mode"]:checked').value;
+        DOMElements.inputs.speedLabel.textContent = selectedMode === 'time' ? 'Time (seconds)' : 'GPM (Gallons Per Minute)';
+    }
+
+    // --- CORE CALCULATION LOGIC ---
+    /**
+     * Main function to perform all calculations and update the UI.
+     */
+    function calculateAndDisplay() {
+        // 1. Get all input values
+        const inputs = {
+            extendForce: getFloatValue(DOMElements.inputs.extendForce),
+            retractForce: getFloatValue(DOMElements.inputs.retractForce),
+            psi: getFloatValue(DOMElements.inputs.psi),
+            stroke: getFloatValue(DOMElements.inputs.stroke),
+            rodType: DOMElements.inputs.rodType.value,
+            rodSize: getFloatValue(DOMElements.inputs.rodSize),
+            speedMode: document.querySelector('input[name="speed-mode"]:checked').value,
+            speedValue: getFloatValue(DOMElements.inputs.speedInput),
+            pumpRPM: getFloatValue(DOMElements.inputs.pumpRPM),
+        };
+
+        // 2. Initial Calculations
+        const theoreticalBEA = inputs.psi > 0 ? inputs.extendForce / inputs.psi : 0;
+        const calculatedBore = Math.sqrt(theoreticalBEA / PI_OVER_4);
+
+        // 3. Update Rod Options & Determine Actual Bore/Rod
+        updateRodSizeDropdown(calculatedBore, inputs.rodType);
+        
+        const configData = cylinderData[inputs.rodType];
+        const boreConfig = configData ? (configData.find(b => calculatedBore <= b.maxBore) || configData[configData.length - 1]) : null;
+        
+        const actualBore = boreConfig ? boreConfig.chartBore : 0;
+        const actualRod = inputs.rodSize > 0 ? inputs.rodSize : (boreConfig && boreConfig.rods.length === 1 ? boreConfig.rods[0].size : 0);
+
+        // 4. Perform Main Calculations
+        const actualBEA = Math.pow(actualBore, 2) * PI_OVER_4;
+        const actualREA = actualBEA - (Math.pow(actualRod, 2) * PI_OVER_4);
+        const ratio = actualREA > 0 ? actualBEA / actualREA : 0;
+        const extendVolume = actualBEA * inputs.stroke;
+        const retractVolume = actualREA * inputs.stroke;
+        const extendLinePSI = actualBEA > 0 ? inputs.extendForce / actualBEA : 0;
+        const retractLinePSI = actualREA > 0 ? inputs.retractForce / actualREA : 0;
+        
+        const compTheoretical = extendLinePSI * COMP_FACTOR;
+        const compActual = roundUpToNearest(compTheoretical, 50);
+
+        const reliefTheoretical = extendLinePSI * RELIEF_VALVE_FACTOR;
+        const reliefActual = roundUpToNearest(reliefTheoretical, 50);
+
+        // 5. Speed, GPM, and Time Calculations
+        let extendTime = 0, retractTime = 0, pumpGPM = 0;
+        if (inputs.speedMode === 'time' && inputs.speedValue > 0) {
+            extendTime = inputs.speedValue;
+            pumpGPM = extendVolume / (extendTime * GPM_TIME_FACTOR);
+        } else if (inputs.speedMode === 'gpm' && inputs.speedValue > 0) {
+            pumpGPM = inputs.speedValue;
+            extendTime = pumpGPM > 0 ? extendVolume / (pumpGPM * GPM_TIME_FACTOR) : 0;
+        }
+
+        if (pumpGPM > 0) {
+            retractTime = retractVolume / (pumpGPM * GPM_TIME_FACTOR);
+        }
+        
+        const extendIPM = pumpGPM * CUBIC_INCHES_PER_GALLON / (actualBEA > 0 ? actualBEA : 1);
+        const retractIPM = pumpGPM * CUBIC_INCHES_PER_GALLON / (actualREA > 0 ? actualREA : 1);
+
+        // 6. Pump CID Calculation
+        const pumpCID = inputs.pumpRPM > 0 ? (pumpGPM * CUBIC_INCHES_PER_GALLON) / inputs.pumpRPM : 0;
+
+        // 7. Update all output fields
+        const { outputs } = DOMElements;
+        outputs.boreTheoretical.value = format(calculatedBore, 3);
+        outputs.beaTheoretical.value = format(theoreticalBEA, 3);
+        outputs.boreActual.value = format(actualBore, 3);
+        outputs.rodActual.value = format(actualRod, 4);
+        outputs.beaActual.value = format(actualBEA, 4);
+        outputs.reaActual.value = format(actualREA, 4);
+        outputs.ratioActual.value = format(ratio, 2);
+        outputs.extendVolume.value = format(extendVolume, 2);
+        outputs.retractVolume.value = format(retractVolume, 2);
+        outputs.extendLinePsi.value = format(extendLinePSI, 0);
+        outputs.retractLinePsi.value = format(retractLinePSI, 0);
+        outputs.compTheoretical.value = format(compTheoretical, 0);
+        outputs.compActual.value = format(compActual, 0);
+        outputs.reliefTheoretical.value = format(reliefTheoretical, 0);
+        outputs.reliefActual.value = format(reliefActual, 0);
+        outputs.extendTime.value = format(extendTime, 2);
+        outputs.retractTime.value = format(retractTime, 2);
+        outputs.extendIpm.value = format(extendIPM, 1);
+        outputs.retractIpm.value = format(retractIPM, 1);
+        outputs.pumpGpm.value = format(pumpGPM, 2);
+        outputs.pumpCid.value = format(pumpCID, 2);
+    }
+
+    // --- EVENT LISTENERS ---
+    // A single listener on the form is more efficient than one per input.
+    DOMElements.form.addEventListener('input', calculateAndDisplay);
+    DOMElements.form.addEventListener('change', calculateAndDisplay); // For <select> changes
+    
+    // Specific listener for radio buttons to toggle the label
+    DOMElements.inputs.speedMode.forEach(radio => {
+        radio.addEventListener('change', toggleSpeedInputLabel);
+    });
+
+    // Initial calculation on page load
+    calculateAndDisplay();
+});
+</script>
+
+</body>
+</html>

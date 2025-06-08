@@ -1,0 +1,391 @@
+/*
+    Brent C Hull
+    2023-10-01
+    Fluid Power Pneumatic Cylinder Sizing Calculator
+    This HTML document provides a user interface for calculating pneumatic cylinder sizes based on user inputs.
+    It includes dynamic updates for rod sizes and bore calculations based on selected cylinder types.
+*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumatic Cylinder Sizing Calculator</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        /* Layout Containers */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            grid-column: 1 / -1;
+            color: #005f73;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Form & Input Styling */
+        .input-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: #005f73;
+        }
+
+        input[type="text"], select {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #0077b6;
+            box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.2);
+        }
+
+        /* Results Section Styling */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem 0.5rem;
+            align-items: center;
+        }
+
+        .results-grid .header {
+            font-weight: bold;
+            color: #005f73;
+        }
+        
+        .results-grid .label {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 1rem;
+        }
+        
+        .results-grid .span-2 {
+            grid-column: span 2;
+        }
+
+        .results-grid input[type="text"] {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>Pneumatic Cylinder Sizing Calculator 💨</h1>
+
+        <form class="input-form" id="pneumatic-form">
+            <fieldset>
+                <legend><h2>Primary Inputs</h2></legend>
+                <div class="input-group">
+                    <label for="force">Force Required (lbs)</label>
+                    <input type="text" id="force">
+                </div>
+                <div class="input-group">
+                    <label for="stroke">Stroke (inches)</label>
+                    <input type="text" id="stroke">
+                </div>
+                <div class="input-group">
+                    <label for="psig">Inlet Pressure (PSIG)</label>
+                    <input type="text" id="psig">
+                </div>
+                 <div class="input-group">
+                    <label for="time">Time for Stroke (seconds)</label>
+                    <input type="text" id="time">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><h2>Cylinder Configuration</h2></legend>
+                 <div class="input-group">
+                    <label for="rod-type">Cylinder Type</label>
+                    <select id="rod-type">
+                        <option value="0">--- Select Type ---</option>
+                        <option value="1">NFPA 4-Tie Rod</option>
+                        <option value="2">Round Body</option>
+                        <option value="3">Low Profile</option>
+                    </select>
+                </div>
+                <div class="input-group" id="rod-size-group">
+                    <label for="rod-size">Rod Oversize</label>
+                    <select id="rod-size">
+                        <option value="0">---</option>
+                    </select>
+                </div>
+            </fieldset>
+        </form>
+
+        <div class="results-section">
+            <h2>Calculated Results</h2>
+            <div class="results-grid">
+                <div class="header">Parameter</div>
+                <div class="header">Theoretical</div>
+                <div class="header">Actual</div>
+
+                <div class="label">Bore (in)</div>
+                <input type="text" id="bore-theoretical" readonly>
+                <input type="text" id="bore-actual" readonly>
+
+                <div class="label">Rod (in)</div>
+                <div></div>
+                <input type="text" id="rod-actual" readonly>
+                
+                <div class="label">Area (in²)</div>
+                <div></div>
+                <input type="text" id="area-actual" readonly>
+                
+                <div class="label">Volume (in³)</div>
+                <div></div>
+                <input type="text" id="volume-actual" readonly>
+
+                <div class="label">Compression Factor</div>
+                <div></div>
+                <input type="text" id="cf-actual" readonly>
+                
+                <div class="label">ΔP (PSIG)</div>
+                <div></div>
+                <input type="text" id="delta-p-actual" readonly>
+
+                <div class="label">PSIG 2</div>
+                <div></div>
+                <input type="text" id="psig2-actual" readonly>
+                
+                <div class="label">Flow (SCFM)</div>
+                <div></div>
+                <input type="text" id="scfm-actual" readonly>
+
+                <div class="label">Flow Coefficient (Cv)</div>
+                <div></div>
+                <input type="text" id="cv-actual" readonly>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- CONFIGURATION DATA ---
+    // Replaces complex 'if'/'switch' logic with a structured object for easy maintenance.
+    const pneumaticsData = {
+        // NFPA 4-Tie Rod - User can select oversized rod
+        "1": {
+            type: 'selectable',
+            bores: [
+                { maxBore: 1.5,  chartBore: 1.5,  rods: [{ name: '0.625"', value: 0.625 }] },
+                { maxBore: 2,    chartBore: 2.0,  rods: [{ name: '0.625"', value: 0.625 }, { name: '1.000"', value: 1.000 }] },
+                { maxBore: 2.5,  chartBore: 2.5,  rods: [{ name: '0.625"', value: 0.625 }, { name: '1.000"', value: 1.000 }] },
+                { maxBore: 3.25, chartBore: 3.25, rods: [{ name: '1.000"', value: 1.000 }, { name: '1.375"', value: 1.375 }] },
+                { maxBore: 4,    chartBore: 4.0,  rods: [{ name: '1.000"', value: 1.000 }, { name: '1.375"', value: 1.375 }] },
+                { maxBore: 5,    chartBore: 5.0,  rods: [{ name: '1.000"', value: 1.000 }, { name: '1.750"', value: 1.750 }] },
+                { maxBore: 6,    chartBore: 6.0,  rods: [{ name: '1.375"', value: 1.375 }, { name: '1.750"', value: 1.750 }] },
+                { maxBore: 7,    chartBore: 7.0,  rods: [{ name: '1.375"', value: 1.375 }, { name: '1.750"', value: 1.750 }] },
+                { maxBore: 8,    chartBore: 8.0,  rods: [{ name: '1.375"', value: 1.375 }, { name: '1.750"', value: 1.750 }] },
+                { maxBore: 10,   chartBore: 10.0, rods: [{ name: '1.750"', value: 1.750 }, { name: '2.000"', value: 2.000 }] },
+                { maxBore: 12,   chartBore: 12.0, rods: [{ name: '2.000"', value: 2.000 }, { name: '2.500"', value: 2.500 }] },
+            ]
+        },
+        // Round Body - Rod size is fixed for a given bore
+        "2": {
+            type: 'fixed',
+            bores: [
+                { maxBore: 0.3125, chartBore: 0.3125, rodSize: 0.1250 },
+                { maxBore: 0.4375, chartBore: 0.4375, rodSize: 0.1875 },
+                { maxBore: 0.5625, chartBore: 0.5625, rodSize: 0.1875 },
+                { maxBore: 0.75,   chartBore: 0.75,   rodSize: 0.2500 },
+                { maxBore: 0.875,  chartBore: 0.875,  rodSize: 0.2500 },
+                { maxBore: 1.0625, chartBore: 1.0625, rodSize: 0.3125 },
+                { maxBore: 1.25,   chartBore: 1.25,   rodSize: 0.4375 },
+                { maxBore: 1.5,    chartBore: 1.5,    rodSize: 0.4375 },
+                { maxBore: 1.75,   chartBore: 1.75,   rodSize: 0.5000 },
+                { maxBore: 2,      chartBore: 2.0,    rodSize: 0.6250 },
+                { maxBore: 2.5,    chartBore: 2.5,    rodSize: 0.6250 },
+                { maxBore: 3,      chartBore: 3.0,    rodSize: 0.7500 },
+            ]
+        },
+        // Low Profile - Rod size is fixed for a given bore
+        "3": {
+            type: 'fixed',
+            bores: [
+                { maxBore: 0.5,    chartBore: 0.5,    rodSize: 0.2500 },
+                { maxBore: 0.75,   chartBore: 0.75,   rodSize: 0.3125 },
+                { maxBore: 1.125,  chartBore: 1.125,  rodSize: 0.5000 },
+                { maxBore: 1.625,  chartBore: 1.625,  rodSize: 0.6250 },
+                { maxBore: 2,      chartBore: 2.0,    rodSize: 0.7500 },
+                { maxBore: 2.5,    chartBore: 2.5,    rodSize: 0.7500 },
+                { maxBore: 3,      chartBore: 3.0,    rodSize: 0.7500 },
+                { maxBore: 4,      chartBore: 4.0,    rodSize: 0.8750 },
+            ]
+        }
+    };
+
+    // --- DOM ELEMENT REFERENCES ---
+    const DOMElements = {
+        form: document.getElementById('pneumatic-form'),
+        inputs: {
+            force: document.getElementById('force'),
+            stroke: document.getElementById('stroke'),
+            psig: document.getElementById('psig'),
+            time: document.getElementById('time'),
+            rodType: document.getElementById('rod-type'),
+            rodSizeGroup: document.getElementById('rod-size-group'),
+            rodSize: document.getElementById('rod-size'),
+        },
+        outputs: {
+            boreTheoretical: document.getElementById('bore-theoretical'),
+            boreActual: document.getElementById('bore-actual'),
+            rodActual: document.getElementById('rod-actual'),
+            areaActual: document.getElementById('area-actual'),
+            volumeActual: document.getElementById('volume-actual'),
+            cfActual: document.getElementById('cf-actual'),
+            deltaPActual: document.getElementById('delta-p-actual'),
+            psig2Actual: document.getElementById('psig2-actual'),
+            scfmActual: document.getElementById('scfm-actual'),
+            cvActual: document.getElementById('cv-actual'),
+        }
+    };
+
+    // --- CONSTANTS ---
+    const PI_OVER_4 = 0.7854;
+    const FORCE_SAFETY_FACTOR = 1.25;
+    const ATMOSPHERIC_PSI = 14.7;
+    const DELTA_P_FACTOR = 0.1; // For 10% pressure drop
+    const SCFM_CONVERSION_FACTOR = 28.8;
+    const CV_CONVERSION_FACTOR = 1.024;
+
+    // --- HELPER FUNCTIONS ---
+    const getFloatValue = (element) => parseFloat(element.value) || 0;
+    const format = (num, places = 3) => isNaN(num) || !isFinite(num) ? '0.000' : num.toFixed(places);
+
+    // --- DYNAMIC UI UPDATES ---
+    function updateRodUI(boreConfig, rodTypeConfig) {
+        const { rodSizeGroup, rodSize } = DOMElements.inputs;
+        const currentRodValue = rodSize.value;
+
+        if (rodTypeConfig && rodTypeConfig.type === 'selectable') {
+            rodSizeGroup.style.display = 'flex';
+            rodSize.innerHTML = ''; // Clear options
+
+            if (boreConfig && boreConfig.rods) {
+                boreConfig.rods.forEach(rod => {
+                    const option = document.createElement('option');
+                    option.value = rod.value;
+                    option.textContent = rod.name;
+                    rodSize.appendChild(option);
+                });
+                rodSize.value = currentRodValue; // Restore selection if possible
+                if (!rodSize.value) { // If selection is no longer valid, default to first
+                    rodSize.selectedIndex = 0;
+                }
+            }
+        } else {
+            rodSizeGroup.style.display = 'none';
+            rodSize.innerHTML = '<option value="0">---</option>';
+        }
+    }
+
+    // --- CORE CALCULATION LOGIC ---
+    function calculateAndDisplay() {
+        // 1. Get all input values
+        const inputs = {
+            force: getFloatValue(DOMElements.inputs.force),
+            stroke: getFloatValue(DOMElements.inputs.stroke),
+            psig: getFloatValue(DOMElements.inputs.psig),
+            time: getFloatValue(DOMElements.inputs.time),
+            rodType: DOMElements.inputs.rodType.value,
+            rodSize: getFloatValue(DOMElements.inputs.rodSize),
+        };
+
+        // 2. Initial Calculations
+        const requiredArea = inputs.psig > 0 ? (inputs.force / inputs.psig) * FORCE_SAFETY_FACTOR : 0;
+        const theoreticalBore = Math.sqrt(requiredArea / PI_OVER_4);
+
+        // 3. Look up cylinder configuration
+        const rodTypeConfig = pneumaticsData[inputs.rodType];
+        const boreConfig = rodTypeConfig ? (rodTypeConfig.bores.find(b => theoreticalBore <= b.maxBore) || rodTypeConfig.bores[rodTypeConfig.bores.length - 1]) : null;
+
+        // 4. Update UI and determine actual values
+        updateRodUI(boreConfig, rodTypeConfig);
+        
+        const actualBore = boreConfig ? boreConfig.chartBore : 0;
+        let actualRod = 0;
+        if (rodTypeConfig) {
+            if (rodTypeConfig.type === 'selectable') {
+                actualRod = getFloatValue(DOMElements.inputs.rodSize); // Re-read in case it was auto-selected
+            } else if (rodTypeConfig.type === 'fixed') {
+                actualRod = boreConfig ? boreConfig.rodSize : 0;
+            }
+        }
+
+        // 5. Perform Main Calculations with Actual Values
+        const actualArea = Math.pow(actualBore, 2) * PI_OVER_4;
+        const actualVolume = actualArea * inputs.stroke;
+        const compressionFactor = inputs.psig > 0 ? (inputs.psig + ATMOSPHERIC_PSI) / ATMOSPHERIC_PSI : 0;
+        const deltaP = inputs.psig * DELTA_P_FACTOR;
+        const psig2 = inputs.psig - deltaP;
+
+        // 6. Flow Calculations
+        const scfm = inputs.time > 0 ? (actualVolume * compressionFactor) / (inputs.time * SCFM_CONVERSION_FACTOR) : 0;
+        const cvDenominator = Math.sqrt(deltaP * (psig2 + ATMOSPHERIC_PSI));
+        const cv = cvDenominator > 0 ? (scfm * CV_CONVERSION_FACTOR) / cvDenominator : 0;
+
+        // 7. Update all output fields
+        const { outputs } = DOMElements;
+        outputs.boreTheoretical.value = format(theoreticalBore);
+        outputs.boreActual.value = format(actualBore, 4);
+        outputs.rodActual.value = format(actualRod, 4);
+        outputs.areaActual.value = format(actualArea);
+        outputs.volumeActual.value = format(actualVolume);
+        outputs.cfActual.value = format(compressionFactor);
+        outputs.deltaPActual.value = format(deltaP, 2);
+        outputs.psig2Actual.value = format(psig2, 2);
+        outputs.scfmActual.value = format(scfm, 2);
+        outputs.cvActual.value = format(cv);
+    }
+
+    // --- EVENT LISTENERS ---
+    DOMElements.form.addEventListener('input', calculateAndDisplay);
+    DOMElements.form.addEventListener('change', calculateAndDisplay);
+
+    // Initial calculation on page load
+    calculateAndDisplay();
+});
+</script>
+
+</body>
+</html>
