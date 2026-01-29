@@ -1,11 +1,11 @@
-/*
+<!--
     Brent C Hull
     2023-10-01
     Fluid Power Rod Cylinder Sizing Calculator
     This calculator is designed to help users size hydraulic cylinders based on input parameters such as force, pressure, stroke, and rod type.
     It calculates theoretical and actual bore sizes, rod sizes, volumes, pressures, and other related metrics.
     The calculator is structured to be user-friendly, with clear input fields and dynamically updated results.
-*/
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,12 +115,42 @@
             font-weight: bold;
             text-align: center;
         }
+
+        
+        /* Update the H1 to be a flex container */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            grid-column: 1 / -1;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .header-container h1 {
+            border-bottom: none; /* Remove border from H1 since it's on the container now */
+            margin: 0;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
     <div class="calculator-container">
-        <h1>Fluid Power Rod Cylinder Sizing Calculator ⚙️</h1>
+        <div class="header-container">
+            <h1>Fluid Power Rod Cylinder Sizing Calculator ⚙️</h1>
+            <a href="fp_pneumatic_cyl_calc.html" class="nav-link">Switch to Pneumatic Calculator →</a>
+        </div>
 
         <form class="input-form" id="cylinder-form">
             <fieldset>
