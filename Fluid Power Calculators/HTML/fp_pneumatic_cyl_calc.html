@@ -1,10 +1,9 @@
-/*
+<!--
     Brent C Hull
-    2023-10-01
     Fluid Power Pneumatic Cylinder Sizing Calculator
     This HTML document provides a user interface for calculating pneumatic cylinder sizes based on user inputs.
     It includes dynamic updates for rod sizes and bore calculations based on selected cylinder types.
-*/
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,12 +102,41 @@
             font-weight: bold;
             text-align: center;
         }
+
+        /* Update the H1 to be a flex container */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            grid-column: 1 / -1;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+        
+        .header-container h1 {
+            border-bottom: none; /* Remove border from H1 since it's on the container now */
+            margin: 0;
+        }
+        
+        .nav-link {
+            font-size: 1rem;
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .nav-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
     <div class="calculator-container">
-        <h1>Pneumatic Cylinder Sizing Calculator 💨</h1>
+        <div class="header-container">
+            <h1>Pneumatic Cylinder Sizing Calculator 💨</h1>
+            <a href="fp_hydro_cyl_calc.html" class="nav-link">Switch to Hydraulic Calculator →</a>
+        </div>
 
         <form class="input-form" id="pneumatic-form">
             <fieldset>
