@@ -1,4 +1,4 @@
-<!--
+<!-- 
     Brent C Hull
     2023-10-01
     Fluid Power Rod Cylinder Sizing Calculator
@@ -117,30 +117,49 @@
         }
 
         
-        /* Update the H1 to be a flex container */
         .header-container {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center; /* Centered vertically */
             grid-column: 1 / -1;
             border-bottom: 2px solid #e0e0e0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
         }
 
         .header-container h1 {
-            border-bottom: none; /* Remove border from H1 since it's on the container now */
+            border-bottom: none; 
             margin: 0;
+            font-size: 1.5rem; /* Slightly smaller to fit everything */
+            color: #005f73;
+        }
+
+        .nav-group {
+            display: flex;
+            gap: 10px;
         }
 
         .nav-link {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: #0077b6;
             text-decoration: none;
             font-weight: bold;
+            padding: 6px 12px;
+            border: 1px solid #0077b6;
+            border-radius: 4px;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
-            text-decoration: underline;
+            background-color: #0077b6;
+            color: white;
+        }
+
+        .home-btn {
+            background-color: #f8f9fa;
+            color: #333;
+            border-color: #ccc;
         }
     </style>
 </head>
@@ -148,6 +167,7 @@
 
     <div class="calculator-container">
         <div class="header-container">
+            <a href="../../index.html" class="nav-link home-btn">🏠 Home</a>
             <h1>Fluid Power Rod Cylinder Sizing Calculator ⚙️</h1>
             <a href="fp_pneumatic_cyl_calc.html" class="nav-link">Switch to Pneumatic Calculator →</a>
         </div>
